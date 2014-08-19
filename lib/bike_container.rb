@@ -24,6 +24,7 @@ module BikeContainer
 	end
 
 	def release(bike)
+		raise "No Bikes" if bikes == []
 		bikes.delete(bike)
 	end
 
@@ -33,5 +34,15 @@ module BikeContainer
 
 	def available_bikes
 		bikes.reject { |bike| bike.broken? }
+	end
+
+	def broken_bikes
+		bikes.select { |bike| bike.broken? }
+	end
+
+	def release_broken_bikes
+		broken = broken_bikes
+		bikes.delete(broken_bikes)
+		broken
 	end
 end

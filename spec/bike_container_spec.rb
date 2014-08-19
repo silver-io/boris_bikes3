@@ -41,4 +41,22 @@ describe BikeContainer do
 	  	holder.dock(broken_bike)
 	  	expect(holder.available_bikes).to eq([working_bike])
 	  end
+
+	  it "should raise an error if dock is passed without arguments" do
+	  	expect{ dock() }.to raise_error
+	  end
+
+	  xit "should not dock a bike that is already docked" do
+	  	bike1 = Bike.new
+	  	holder.dock(bike1)
+	  	expect{ holder.dock(bike1) }.to raise_error
+	  end
+
+	  it "should not release a bike that's not there" do
+	  	bike1 = Bike.new
+	  	expect{ holder.release(bike1) }.to raise_error
+	  end
+
+	  	
+
 end
