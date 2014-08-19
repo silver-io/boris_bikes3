@@ -1,6 +1,9 @@
 require 'van'
 
 describe Van do 
+
+	let(:bike) { Bike.new }
+
 	it "should tell the dock to release all broken bikes" do
 		van = Van.new
 		station = DockingStation.new
@@ -23,5 +26,18 @@ describe Van do
 		van.pickup_broken_bikes(station)
 		expect(van.bikes).to eq [broken_bike1, broken_bike2]
 	end
+
+	it "should not accept bikes if it is full" do
+		van = Van.new
+		station = DockingStation.new
+		bike.break!
+		station.dock(bike)
+		10.times{ van.dock(bike) }
+		expect{ van.pickup_broken_bikes(station) }.to raise_error
+	end
+
+
+		
+
 end
 

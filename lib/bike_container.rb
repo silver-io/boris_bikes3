@@ -25,11 +25,16 @@ module BikeContainer
 
 	def release(bike)
 		raise "No Bikes" if bikes == []
+		raise "That bike is broken!" if bike.broken?
 		bikes.delete(bike)
 	end
 
 	def full?
 		bike_count == capacity
+	end
+
+	def empty?
+		bike_count == 0
 	end
 
 	def available_bikes
@@ -42,7 +47,7 @@ module BikeContainer
 
 	def release_broken_bikes
 		broken = broken_bikes
-		bikes.delete(broken_bikes)
+		bikes.reject! { |bike| bike.broken? }
 		broken
 	end
 end

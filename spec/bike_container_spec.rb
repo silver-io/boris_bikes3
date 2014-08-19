@@ -29,9 +29,21 @@ describe BikeContainer do
 	  	expect(holder).to be_full
 	  end
 
+	  it "knows when it's empty" do
+	  	expect(holder.empty?).to be true
+	  end
+
 	  it "doesn't accept a bike when full" do
 	  	fill_holder holder
 	    expect(lambda { holder.dock(bike) }).to raise_error(RuntimeError)    
+	  end
+
+	  it "won't release a bike that's broken" do
+	  	working_bike, broken_bike = Bike.new, Bike.new
+	  	broken_bike.break!
+	  	holder.dock(working_bike)
+	  	holder.dock(broken_bike)
+	  	expect{ holder.release(broken_bike)}.to raise_error
 	  end
 
 	  it "provides the list of available bikes" do
@@ -55,6 +67,21 @@ describe BikeContainer do
 	  it "should not release a bike that's not there" do
 	  	bike1 = Bike.new
 	  	expect{ holder.release(bike1) }.to raise_error
+	  end
+
+	  it "returns empty when it has no bikes" do
+	  	holder.dock(bike)
+	  	holder.release(bike)
+	  	expect(holder.empty?).to be true
+	  end
+
+	  it "returns empty after releasing broken bikes" do
+	  	broken_bike = Bike.new
+	  	broken_bike.break!
+	  	holder.dock(broken_bike)
+	  	holder.release_broken_bikes
+	  	p holder.broken_bikes
+	  	expect(holder.empty?).to be true
 	  end
 
 	  	
